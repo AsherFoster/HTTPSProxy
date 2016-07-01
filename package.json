@@ -1,0 +1,19 @@
+{
+  "name": "https-proxy",
+  "version": "0.0.1",
+  "description": "A webserver to proxy HTTPS requests over HTTP when HTTPS is blocked on a network",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AsherFoster/HTTPSProxy.git"
+  },
+  "author": "Asher Foster",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AsherFoster/HTTPSProxy/issues"
+  },
+  "homepage": "https://github.com/AsherFoster/HTTPSProxy#readme"
+}
