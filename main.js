@@ -20,7 +20,7 @@ app.use(function(req, res){
                 body += chunk;
             });
             resp.on('end', function() {
-                res.status(resp.status);
+                res.status(resp.statusCode);
                 res.set(resp.headers);
                 res.send(body);
             });
