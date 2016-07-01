@@ -11,9 +11,6 @@ var express = require('express'),
 
 
 app.get('/', function(req, res){
-    res.sendFile('index.html');
-});
-app.get('/api', function(req, res){
     var url = req.query.url,
         host = req.headers.host.split(base).join();
     console.log(host);
