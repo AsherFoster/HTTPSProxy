@@ -20,6 +20,8 @@ app.use(function(req, res){
                 body += chunk;
             });
             resp.on('end', function() {
+                res.status(resp.status);
+                res.set(resp.headers);
                 res.send(body);
             });
         });
