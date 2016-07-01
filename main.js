@@ -11,22 +11,18 @@ var express = require('express'),
 
 
 app.use(function(req, res){
-    var host = req.headers.host.split(base)[0];
-    console.log(host + "/" + req.url);
-    // if(url){
-    //     var protocol = url.split(':')[0];
-    //     if(protocol === 'http' || protocol === 'https'){
-    //         var body = "";
-    //         (protocol === 'https' ? https : http).get(url, function(resp){
-    //             resp.on('data', function(chunk) {
-    //                 body += chunk;
-    //             });
-    //             resp.on('end', function() {
-    //                 res.send(body);
-    //             });
-    //         });
-    //     }else res.send(400).send("Must be a HTTP or HTTPS URL");
-    // }else res.status(400).send("Must have URL query field");
+    var url = req.headers.host.split(base)[0] + req.url;
+    if(url !== "/"){
+        var body = "";
+        https.get(url, function(resp){
+            resp.on('data', function(chunk) {
+                body += chunk;
+            });
+            resp.on('end', function() {
+                res.send(body);
+            });
+        });
+    }else res.status(400).send("Have a host");
 });
 app.listen(port);
 console.log("Ready on port "+port);
