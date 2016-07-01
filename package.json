@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/AsherFoster/HTTPSProxy/issues"
   },
-  "homepage": "https://github.com/AsherFoster/HTTPSProxy#readme"
+  "homepage": "https://github.com/AsherFoster/HTTPSProxy#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
