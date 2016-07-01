@@ -12,6 +12,7 @@ var express = require('express'),
 
 app.use(function(req, res){
     var url = req.headers.host.split(base)[0] + req.url;
+    console.log(url);
     if(url !== "/"){
         var body = "";
         https.get(url, function(resp){
