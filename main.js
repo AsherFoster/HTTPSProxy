@@ -10,10 +10,9 @@ var express = require('express'),
     base = ".proxy.asherfoster.com";
 
 
-app.get('/', function(req, res){
-    var url = req.query.url,
-        host = req.headers.host.split(base).join();
-    console.log(host);
+app.use(function(req, res){
+    var host = req.headers.host.split(base)[0];
+    console.log(host + "/" + req.url);
     // if(url){
     //     var protocol = url.split(':')[0];
     //     if(protocol === 'http' || protocol === 'https'){
