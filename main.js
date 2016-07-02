@@ -7,28 +7,36 @@ var express = require('express'),
     https = require('https'),
     app = express(),
     port = process.env.PORT || process.argv[2] || 8060,
-    base = ".proxy.asherfoster.com";
+    base = ".proxy.asherfoster.com",
+    httpOnly = [];
 
-
+function getPage(method, url, host, res){
+    var body = "";
+    method(url, function(resp){
+        resp.on('data', function(chunk){
+            body += chunk;
+        });
+        resp.on('end', function() {
+            if(resp.statusCode > 300 && resp.statusCode < 400){
+                if(resp.headers.location.substr(0, 5) === 'http:'){
+                    httpOnly.push(host);
+                    getPage(http.get, url, host, res);
+                }
+            }
+            res.status(resp.statusCode);
+            res.set(resp.headers);
+            res.send(body);
+        });
+    });
+}
 app.use(function(req, res){
-    var url = 'https://' + req.headers.host.split(base)[0] + req.url;
+    var host = req.headers.host.split(base)[0],
+        url = 'https://' + host + req.url;
     console.log(url);
     if(url !== "/"){
         var body = "";
         try{
-            https.get(url, function(resp){
-                resp.on('data', function(chunk){
-                    body += chunk;
-                });
-                resp.on('end', function() {
-                    if(resp.status > 300 && resp.status < 400){
-                        console.log(resp);
-                    }
-                    res.status(resp.statusCode);
-                    res.set(resp.headers);
-                    res.send(body);
-                });
-            });
+            getPage((httpOnly.indexOf(host) > -1 ? http : https).get, url, host, res);
         }catch(e){
             res.sendStatus(500);
         }
