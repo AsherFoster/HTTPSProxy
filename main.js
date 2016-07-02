@@ -13,10 +13,12 @@ var express = require('express'),
 function getPage(method, host, path, res){
     console.log(method + "://" + host + path);
     (method === 'https' ? https: http).request({
+        method: method,
         hostname: host,
         path: path,
         encoding: null
     }, function(resp){
+        console.log("CB");
         var body = [];
 
         resp.on('data', function(chunk){
