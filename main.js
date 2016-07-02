@@ -16,8 +16,7 @@ function getPage(method, host, path, res){
         console.log(resp.statusCode + ": " + url);
         var body = [];
 
-        resp.setTimeout(5000);
-        resp.on('error', function(){
+        resp.setTimeout(5000, function(){
             if(method === "https"){
                 httpOnly.push(host);
                 getPage('http', host, path, res);
@@ -39,6 +38,13 @@ function getPage(method, host, path, res){
                 res.send(Buffer.concat(body));
             }
         });
+    }).on('error', function(){
+        if(method === "https"){
+            httpOnly.push(host);
+            getPage('http', host, path, res);
+        } else{
+            res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
+        }
     });
 }
 app.use(function(req, res){
