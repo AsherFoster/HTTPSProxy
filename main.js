@@ -17,7 +17,8 @@ function getPage(method, host, path, res){
                 httpOnly.push(host);
                 getPage('http', host, path, res);
             } else{
-                res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
+                if(!res.headersSent)
+                    res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
             }
         };
     (method === 'https' ? https: http).get(url, function(resp){
@@ -44,7 +45,7 @@ function getPage(method, host, path, res){
         handleError();
     }).on('socket', function(socket){
         socket.setTimeout(1000);
-        socket.on('timeout', handleError)
+        socket.on('timeout', handleError);
     });
 }
 app.use(function(req, res){
