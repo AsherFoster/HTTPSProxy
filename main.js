@@ -16,10 +16,12 @@ function getPage(method, host, path, res){
     (method === 'https' ? https: http).get(url, function(resp){
         var body = [];
 
-        resp.setTimeout(5000, function(){
-            if(method === "https")
+        resp.setTimeout(5000);
+        resp.on('error', function(){
+            if(method === "https"){
+                httpOnly.push(host);
                 getPage('http', host, path, res);
-            else{
+            } else{
                 res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
             }
         });
