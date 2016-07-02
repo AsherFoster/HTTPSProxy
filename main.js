@@ -11,21 +11,25 @@ var express = require('express'),
 
 
 app.use(function(req, res){
-    var url = 'https://' + req.headers.host.split(base)[0] + req.url;
-    console.log(url);
-    if(url !== "/"){
-        var body = "";
-        https.get(url, function(resp){
-            resp.on('data', function(chunk) {
-                body += chunk;
+    try{
+        var url = 'https://' + req.headers.host.split(base)[0] + req.url;
+        console.log(url);
+        if(url !== "/"){
+            var body = "";
+            https.get(url, function(resp){
+                resp.on('data', function(chunk) {
+                    body += chunk;
+                });
+                resp.on('end', function() {
+                    res.status(resp.statusCode);
+                    res.set(resp.headers);
+                    res.send(body);
+                });
             });
-            resp.on('end', function() {
-                res.status(resp.statusCode);
-                res.set(resp.headers);
-                res.send(body);
-            });
-        });
-    }else res.status(400).send("Have a host");
+        }else res.status(400).send("Have a host");
+    }catch(e){
+        res.sendStatus(500);
+    }
 });
 app.listen(port);
 console.log("Ready on port "+port);
