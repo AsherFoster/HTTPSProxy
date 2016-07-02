@@ -34,7 +34,7 @@ function getPage(method, host, path, res){
                 console.log(url + " is a HTTP only page");
                 httpOnly.push(host);
                 getPage('http', host, path, res);
-            }else{
+            }else if(!res.headersSent){
                 res.status(resp.statusCode);
                 res.set(resp.headers);
                 res.send(Buffer.concat(body));
@@ -49,12 +49,13 @@ function getPage(method, host, path, res){
     });
 }
 app.use(function(req, res){
-    var host = req.headers.host.split(base)[0],
+    var host = req.headers.host.split(base),
         path = req.url,
         method = httpOnly.indexOf(host) > -1 ? 'http' : 'https';
-    if(host){
+    console.log(host);
+    if(host[0]){
         try{
-            getPage(method, host, path, res);
+            getPage(method, host[0], path, res);
         }catch(e){
             console.error(e);
             res.sendStatus(500);
