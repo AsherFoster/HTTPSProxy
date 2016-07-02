@@ -49,10 +49,9 @@ function getPage(method, host, path, res){
     });
 }
 app.use(function(req, res){
-    var host = req.headers.host.split(base),
+    var host = req.headers.host.split(base, 2),
         path = req.url,
         method = httpOnly.indexOf(host) > -1 ? 'http' : 'https';
-    console.log(host);
     if(host.length === 2){
         try{
             getPage(method, host[0], path, res);
@@ -60,7 +59,7 @@ app.use(function(req, res){
             console.error(e);
             res.sendStatus(500);
         }
-    }else res.status(400).send(`Invalid Host (${host.length}): ${host} `);
+    }else res.status(400).send(`Invalid Host (${host.length}): ${host[0]} `);
 });
 app.listen(port);
 console.log("Ready on port "+port);
