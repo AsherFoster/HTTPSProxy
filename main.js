@@ -38,7 +38,7 @@ app.use(function(req, res){
     if(url !== "/"){
         var body = "";
         try{
-            getPage((url[4] === 's' ? http : https).get, url, host, res);
+            getPage((url[4] === 's' ? https : http).get, url, host, res);
         }catch(e){
             console.error(e);
             res.sendStatus(500);
