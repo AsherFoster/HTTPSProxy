@@ -14,14 +14,12 @@ function getPage(method, host, path, res){
     var url = method + "://" + host + path;
     console.log(url);
     (method === 'https' ? https: http).get(url, function(resp){
-        console.log("CB");
         var body = [];
 
         resp.on('data', function(chunk){
             body.push(chunk);
         });
         resp.on('end', function() {
-            console.log("Req end");
             if(resp.statusCode > 300 && resp.statusCode < 400 && resp.headers.location.substr(0, 5) === 'http:'){
                 console.log("Got an HTTP only page");
                 httpOnly.push(host);
