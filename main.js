@@ -17,10 +17,13 @@ app.use(function(req, res){
         var body = "";
         try{
             https.get(url, function(resp){
-                resp.on('data', function(chunk) {
+                resp.on('data', function(chunk){
                     body += chunk;
                 });
                 resp.on('end', function() {
+                    if(resp.status > 300 && resp.status < 400){
+                        console.log(resp);
+                    }
                     res.status(resp.statusCode);
                     res.set(resp.headers);
                     res.send(body);
