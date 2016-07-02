@@ -11,12 +11,9 @@ var express = require('express'),
     httpOnly = [];
 
 function getPage(method, host, path, res){
-    console.log(method + "://" + host + path);
-    (method === 'https' ? https: http).request({
-        method: "GET",
-        hostname: host,
-        path: path
-    }, function(resp){
+    var url = method + "://" + host + path;
+    console.log(url);
+    (method === 'https' ? https: http).request(url, function(resp){
         console.log("CB");
         var body = [];
 
