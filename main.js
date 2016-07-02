@@ -10,11 +10,14 @@ var express = require('express'),
     base = ".proxy.asherfoster.com",
     httpOnly = [];
 
-function getPage(method, url, host, res){
-    console.log(url);
-    method(url, function(resp){
+function getPage(method, host, path, res){
+    console.log(method + "://" + host + path);
+    (method === 'https' ? https: http).request({
+        hostname: host,
+        path: path,
+        encoding: null
+    }, function(resp){
         var body = [];
-        resp.setEncoding('binary');
 
         resp.on('data', function(chunk){
             body.push(chunk);
@@ -24,7 +27,7 @@ function getPage(method, url, host, res){
                 if(resp.headers.location.substr(0, 5) === 'http:'){
                     console.log("Got an HTTP only page");
                     httpOnly.push(host);
-                    getPage(http.get, url.slice(0, 4) + url.slice(5), host, res);
+                    getPage('http', host, path, res);
                 }
             }else{
                 res.status(resp.statusCode);
@@ -36,11 +39,11 @@ function getPage(method, url, host, res){
 }
 app.use(function(req, res){
     var host = req.headers.host.split(base)[0],
-        url = (httpOnly.indexOf(host) > -1 ? 'http://' : 'https://') + host + req.url;
-    if(url !== "/"){
-        var body = "";
+        path = req.url,
+        method = httpOnly.indexOf(host) > -1 ? 'http' : 'https';
+    if(host){
         try{
-            getPage((url[4] === 's' ? https : http).get, url, host, res);
+            getPage(method, host, path, res);
         }catch(e){
             console.error(e);
             res.sendStatus(500);
