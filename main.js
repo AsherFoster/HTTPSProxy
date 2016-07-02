@@ -43,7 +43,7 @@ function getPage(method, host, path, res){
         console.log(`Experienced an error while connecting to ${url}`);
         handleError();
     }).on('socket', function(socket){
-        socket.setTimeout(500);
+        socket.setTimeout(1000);
         socket.on('timeout', handleError)
     });
 }
