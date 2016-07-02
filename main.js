@@ -12,7 +12,7 @@ var express = require('express'),
 
 function getPage(method, host, path, res){
     var url = method + "://" + host + path;
-    console.log(url);
+    console.log(method === 'https' ? 'https' : "http");
     (method === 'https' ? https: http).request(url, function(resp){
         console.log("CB");
         var body = [];
