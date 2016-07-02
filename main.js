@@ -11,19 +11,20 @@ var express = require('express'),
     httpOnly = [];
 
 function getPage(method, host, path, res){
-    var url = method + "://" + host + path;
-    (method === 'https' ? https: http).get(url, function(resp){
-        console.log(resp.statusCode + ": " + url);
-        var body = [];
-
-        resp.setTimeout(5000, function(){
+    var url = method + "://" + host + path,
+        handleError = function(){
             if(method === "https"){
                 httpOnly.push(host);
                 getPage('http', host, path, res);
             } else{
                 res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
             }
-        });
+        };
+    (method === 'https' ? https: http).get(url, function(resp){
+        console.log(resp.statusCode + ": " + url);
+        var body = [];
+
+        resp.setTimeout(5000, handleError);
         resp.on('data', function(chunk){
             body.push(chunk);
         });
@@ -40,14 +41,10 @@ function getPage(method, host, path, res){
         });
     }).on('error', function(){
         console.log(`Experienced an error while connecting to ${url}`);
-        if(method === "https"){
-            httpOnly.push(host);
-            getPage('http', host, path, res);
-        } else{
-            res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
-        }
+        handleError();
     }).on('socket', function(socket){
         socket.setTimeout(4);
+        socket.on('timeout', handleError)
     });
 }
 app.use(function(req, res){
