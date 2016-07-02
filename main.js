@@ -12,10 +12,12 @@ var express = require('express'),
 
 function getPage(method, url, host, res){
     console.log(url);
-    var body = "";
     method(url, function(resp){
+        var body = [];
+        resp.setEncoding('binary');
+
         resp.on('data', function(chunk){
-            body += chunk;
+            body.push(chunk);
         });
         resp.on('end', function() {
             if(resp.statusCode > 300 && resp.statusCode < 400){
@@ -27,7 +29,7 @@ function getPage(method, url, host, res){
             }else{
                 res.status(resp.statusCode);
                 res.set(resp.headers);
-                res.send(body);
+                res.send(Buffer.concat(body));
             }
         });
     });
