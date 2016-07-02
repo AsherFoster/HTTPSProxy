@@ -11,6 +11,7 @@ var express = require('express'),
     httpOnly = [];
 
 function getPage(method, url, host, res){
+    console.log(url);
     var body = "";
     method(url, function(resp){
         resp.on('data', function(chunk){
@@ -21,7 +22,7 @@ function getPage(method, url, host, res){
                 if(resp.headers.location.substr(0, 5) === 'http:'){
                     console.log("Got an HTTP only page");
                     httpOnly.push(host);
-                    getPage(http.get, url, host, res);
+                    getPage(http.get, url[5] = '', host, res);
                 }
             }else{
                 res.status(resp.statusCode);
@@ -34,7 +35,6 @@ function getPage(method, url, host, res){
 app.use(function(req, res){
     var host = req.headers.host.split(base)[0],
         url = 'https://' + host + req.url;
-    console.log(url);
     if(url !== "/"){
         var body = "";
         try{
