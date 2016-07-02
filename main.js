@@ -16,6 +16,13 @@ function getPage(method, host, path, res){
     (method === 'https' ? https: http).get(url, function(resp){
         var body = [];
 
+        resp.setTimeout(5000, function(){
+            if(method === "https")
+                getPage('http', host, path, res);
+            else{
+                res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
+            }
+        });
         resp.on('data', function(chunk){
             body.push(chunk);
         });
