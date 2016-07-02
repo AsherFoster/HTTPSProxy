@@ -22,7 +22,7 @@ function getPage(method, url, host, res){
                 if(resp.headers.location.substr(0, 5) === 'http:'){
                     console.log("Got an HTTP only page");
                     httpOnly.push(host);
-                    getPage(http.get, url[5] = '', host, res);
+                    getPage(http.get, url.slice(0, 4) + url.slice(5), host, res);
                 }
             }else{
                 res.status(resp.statusCode);
