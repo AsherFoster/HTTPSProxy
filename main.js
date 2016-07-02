@@ -11,11 +11,13 @@ var express = require('express'),
 
 
 app.use(function(req, res){
-    try{
-        var url = 'https://' + req.headers.host.split(base)[0] + req.url;
-        console.log(url);
-        if(url !== "/"){
-            var body = "";
+});
+app.listen(port);
+    var url = 'https://' + req.headers.host.split(base)[0] + req.url;
+    console.log(url);
+    if(url !== "/"){
+        var body = "";
+        try{
             https.get(url, function(resp){
                 resp.on('data', function(chunk) {
                     body += chunk;
@@ -26,10 +28,8 @@ app.use(function(req, res){
                     res.send(body);
                 });
             });
-        }else res.status(400).send("Have a host");
-    }catch(e){
-        res.sendStatus(500);
-    }
-});
-app.listen(port);
+        }catch(e){
+            res.sendStatus(500);
+        }
+    }else res.status(400).send("Have a host");
 console.log("Ready on port "+port);
