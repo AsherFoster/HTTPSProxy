@@ -40,6 +40,7 @@ app.use(function(req, res){
         try{
             getPage((httpOnly.indexOf(host) > -1 ? http : https).get, url, host, res);
         }catch(e){
+            console.error(e);
             res.sendStatus(500);
         }
     }else res.status(400).send("Have a host");
