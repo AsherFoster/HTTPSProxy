@@ -39,6 +39,7 @@ function getPage(method, host, path, res){
             }
         });
     }).on('error', function(){
+        console.log(`Experienced an error while connecting to ${url}`);
         if(method === "https"){
             httpOnly.push(host);
             getPage('http', host, path, res);
@@ -46,6 +47,7 @@ function getPage(method, host, path, res){
             res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
         }
     }).on('socket', function(socket){
+        console.log("WE HAVE SOCKET!!!");
         socket.setTimeout(4000);
     });
 }
