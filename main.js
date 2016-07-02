@@ -34,11 +34,11 @@ function getPage(method, url, host, res){
 }
 app.use(function(req, res){
     var host = req.headers.host.split(base)[0],
-        url = 'https://' + host + req.url;
+        url = (httpOnly.indexOf(host) > -1 ? 'http://' : 'https://') + host + req.url;
     if(url !== "/"){
         var body = "";
         try{
-            getPage((httpOnly.indexOf(host) > -1 ? http : https).get, url, host, res);
+            getPage((url[4] === 's' ? http : https).get, url, host, res);
         }catch(e){
             console.error(e);
             res.sendStatus(500);
