@@ -21,7 +21,7 @@ function getPage(method, host, path, res){
         });
         resp.on('end', function() {
             if(resp.statusCode > 300 && resp.statusCode < 400 && resp.headers.location.substr(0, 5) === 'http:'){
-                console.log("Got an HTTP only page");
+                console.log(url + " is a HTTP only page");
                 httpOnly.push(host);
                 getPage('http', host, path, res);
             }else{
