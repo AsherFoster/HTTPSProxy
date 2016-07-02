@@ -12,8 +12,8 @@ var express = require('express'),
 
 function getPage(method, host, path, res){
     var url = method + "://" + host + path;
-    console.log(method === 'https' ? 'https' : "http");
-    (method === 'https' ? https: http).request(url, function(resp){
+    console.log(url);
+    (method === 'https' ? https: http).get(url, function(resp){
         console.log("CB");
         var body = [];
 
