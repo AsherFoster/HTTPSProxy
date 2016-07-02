@@ -12,8 +12,8 @@ var express = require('express'),
 
 function getPage(method, host, path, res){
     var url = method + "://" + host + path;
-    console.log(url);
     (method === 'https' ? https: http).get(url, function(resp){
+        console.log(resp.statusCode + ": " + url);
         var body = [];
 
         resp.setTimeout(5000);
