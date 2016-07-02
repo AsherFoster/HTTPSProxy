@@ -11,8 +11,6 @@ var express = require('express'),
 
 
 app.use(function(req, res){
-});
-app.listen(port);
     var url = 'https://' + req.headers.host.split(base)[0] + req.url;
     console.log(url);
     if(url !== "/"){
@@ -32,4 +30,6 @@ app.listen(port);
             res.sendStatus(500);
         }
     }else res.status(400).send("Have a host");
+});
+app.listen(port);
 console.log("Ready on port "+port);
