@@ -47,8 +47,7 @@ function getPage(method, host, path, res){
             res.send(`The server at ${host} is not responding. Are you sure you typed the URL right?`);
         }
     }).on('socket', function(socket){
-        console.log("WE HAVE SOCKET!!!");
-        socket.setTimeout(4000);
+        socket.setTimeout(4);
     });
 }
 app.use(function(req, res){
