@@ -53,14 +53,14 @@ app.use(function(req, res){
         path = req.url,
         method = httpOnly.indexOf(host) > -1 ? 'http' : 'https';
     console.log(host);
-    if(host[0]){
+    if(host.length === 2){
         try{
             getPage(method, host[0], path, res);
         }catch(e){
             console.error(e);
             res.sendStatus(500);
         }
-    }else res.status(400).send("Have a host");
+    }else res.status(400).send(`Invalid Host (${host.length}): ${host} `);
 });
 app.listen(port);
 console.log("Ready on port "+port);
